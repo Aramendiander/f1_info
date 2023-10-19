@@ -3,27 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
     <title>F1 Index</title>
 </head>
 <body>
-    <section>
-        <h1>F1 Info</h1>
-        <h2 id="lastrace"></h2>
-        <article>
-            <table id="results">
-                <thead>
-                    <th>Position</th>
-                    <th>Grid</th>
-                    <th>Driver</th>
-                    <th>Nationality</th>
-                    <th>Team</th>
-                    <th>Fastest lap time</th>
-                    <th>Laps completed</th>  
-                </thead>
-            </table>
-        </article>
-    </section>
-
+    <div id="container">
+        <section>
+            <h1>F1 Info</h1>
+            <h2 id="lastrace"></h2>
+            <article id="lastrace">
+                <table id="results">
+                    <thead>
+                        <th>Pos</th>
+                        <th>Grid</th>
+                        <th>Driver</th>
+                        <th>Nationality</th>
+                        <th>Team</th>
+                        <th>Fastest lap time</th>
+                        <th>Laps completed</th>  
+                    </thead>
+                </table>
+            </article>
+        </section>
+        <section id="standings">
+            <article>
+                <h2>Driver Standings</h2>
+                <table id="driverstandings">
+                    <thead>
+                        <th>Pos</th>
+                        <th>Driver</th>
+                        <th>Nationality</th>
+                        <th>Team</th>
+                        <th>Points</th>
+                    </thead>
+                </table>
+            </article>
+            <article>
+                <h2>Constructor Standings</h2>
+                <table id="constructorstandings">
+                    <thead>
+                        <th>Pos</th>
+                        <th>Constructor</th>
+                        <th>Country</th>
+                        <th>Points</th>
+                    </thead>
+                </table>
+            </article>
+        </section>
+    </div>
     <script src="./scripts/index.js"></script>
 </body>
 </html>

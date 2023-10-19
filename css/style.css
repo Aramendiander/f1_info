@@ -1,0 +1,58 @@
+div#container {
+    padding: 0 350px;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+article#lastrace {
+    display: flex;
+    justify-content: center;
+}
+
+section#standings {
+    display:flex;
+    justify-content: space-around;
+    margin-top:25px;
+}
+
+table {
+    border: 1px solid;
+}
+
+td, th{
+    font-size: 26px;
+}
+
+td {
+    padding: 5px 10px;
+}
+
+#fastestlap {
+    width: 25px;
+    margin-left: 10px;
+    border-radius: 5px;
+}
+
+@media (max-width: 1500px) {
+    div#container {
+        padding: 0 100px;
+    }
+  }
+
+
+@media (max-width: 950px) {
+    div#container {
+        padding: 0 0;
+    }
+
+    td, th{
+        font-size:14px;
+    }
+
+    section#standings {
+        flex-direction: column;
+    }
+    
+}
