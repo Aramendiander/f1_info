@@ -18,17 +18,6 @@ async function getFlags() {
 
 const flagData = getFlags()
 
-function getFlagEmoji(countryCode) {
-    const countryCodeUpperCase = countryCode.toUpperCase();
-    const base = 127397; // Offset for regional indicator symbols
-    const offset = 65; // Offset for uppercase ASCII letters
-
-    const firstChar = String.fromCodePoint(base + countryCodeUpperCase.charCodeAt(0) - offset);
-    const secondChar = String.fromCodePoint(base + countryCodeUpperCase.charCodeAt(1) - offset);
-
-    return `${firstChar}${secondChar}`;
-}
-
 async function printRaceName(){
         const data = await rawData;
         const raceInfo = data.MRData.RaceTable.Races[0].raceName;
@@ -51,25 +40,71 @@ async function getDriverFlag(country){
 }
 
 
-
+function printTd(arg){
+    const td = document.createElement("td")
+    td.textContent = arg  
+    return td
+}
 
 async function printRaceResults() {
     const data = await rawData;
     const results = data.MRData.RaceTable.Races[0].Results;
-    for (const result of results) {
+    for (let i = 0; i < results.length; i++) {
+        const result = results[i];
+        
+        // Print rows
+        const container = document.getElementById("results");
+        const tr = document.createElement("tr");
+        container.appendChild(tr);
+
+        // Print position cell
+        const driverPosition = result.position;
+        tr.appendChild(printTd(driverPosition));
+
+         // Print grid cell
+        const driverGrid = result.grid
+        tr.appendChild(printTd(driverGrid))
+
+        // Print name cell
         const driverName = `${result.Driver.givenName} ${result.Driver.familyName}`;
+        if (result.FastestLap?.rank) {
+            const raceFastestLap = result.FastestLap.rank
+            if(raceFastestLap === "1") {
+                tr.appendChild(printTd(driverName + '*'))
+            } else {
+                tr.appendChild(printTd(driverName))
+            }
+        } else {
+            tr.appendChild(printTd(driverName))
+        }
+        
+
+        // Print nationality cell
         const driverNationality = result.Driver.nationality;
         const driverFlag = await getDriverFlag(driverNationality);
+        tr.appendChild(printTd(driverFlag))
+
+        // Print constructor cell
         const constructor = result.Constructor.name;
+        tr.appendChild(printTd(constructor))
 
+        // Print fastest lap cell
+        if (result.FastestLap) {
+            tr.appendChild(printTd(result.FastestLap.Time.time))
+        } else {
+            tr.appendChild(printTd("DNF"))
+        }
 
-        const container = document.getElementById("results");
-        container.innerHTML += `${driverName} ${driverFlag}<br>`;
+        // Print laps completed
+        const lapsCompleted = `${result.laps} (${result.status})`
+        tr.appendChild(printTd(lapsCompleted))
     }
 }
 
 
 
 
+
+console.log(rawData)
 printRaceName();
 printRaceResults();
