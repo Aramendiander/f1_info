@@ -6,6 +6,9 @@ h1, h2 {
     text-align: center;
 }
 
+
+/* Index Styling */
+
 article#lastrace {
     display: flex;
     justify-content: center;
@@ -34,6 +37,38 @@ td {
     margin-left: 10px;
     border-radius: 5px;
 }
+
+
+/* Wiki styling */
+
+
+#seasons {
+    display:flex;
+    justify-content: space-around;
+}
+
+article.season {
+    display:inline;
+    width: 100px;
+    padding: 10px;
+    border: 1px solid;
+    text-align: center;
+    cursor:pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @media (max-width: 1500px) {
     div#container {
