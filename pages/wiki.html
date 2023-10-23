@@ -7,32 +7,54 @@
     <title>Wiki F1</title>
 </head>
 <body>
+    <nav>
+        <a href="/">Home</a>
+    </nav>
     <section id ="seasons">
-<!--         <article class="season" value="1950">
-            50's
-        </article>
-        <article class="season" value="1960">
-            60's
-        </article>
-        <article class="season" value="1970">
-            70's
-        </article>
-        <article class="season" value="1980">
-            80's
-        </article>
-        <article class="season" value="1990">
-            90's
-        </article>
-        <article class="season" value="2000">
-            2000's
-        </article>
-        <article class="season" value="2010">
-            2010's
-        </article>
-        <article class="season" value="2020">
-            2020's
-        </article> -->
+        <table id="seasontable">
+            <thead>
+                <th>GP Name</th>
+                <th>Circuit</th>
+                <th>City</th>
+                <th>Date</th>
+                <th>Winning Driver</th>
+                <th>Winning Constructor</th>
+            </thead>
+            <tbody id="seasoninfo">
+
+            </tbody>
+        </table>
     </section>
-    <script src="../scripts/wiki.js"></script>
+    <section id="driverstandings">
+        <table id="driverstandingstable">
+            <thead>
+                <th>GP Name</th>
+                <th>Circuit</th>
+                <th>City</th>
+                <th>Date</th>
+                <th>Winning Driver</th>
+                <th>Winning Constructor</th>
+            </thead>
+            <tbody id="driverstandingsinfo">
+
+            </tbody>
+        </table>
+    </section>
+    <section id="constructorstandings">
+        <table id="constructorstandingstable">
+            <thead>
+                <th>GP Name</th>
+                <th>Circuit</th>
+                <th>City</th>
+                <th>Date</th>
+                <th>Winning Driver</th>
+                <th>Winning Constructor</th>
+            </thead>
+            <tbody id="constructorstandingsinfo">
+
+            </tbody>
+        </table>
+    </section>
+    <script type="module" src="../scripts/wiki.js"></script>
 </body>
 </html>

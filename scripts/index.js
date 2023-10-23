@@ -40,11 +40,13 @@ async function getFlag(country){
 }
 
 
-function printTd(arg){
+export function printTd(arg){
     const td = document.createElement("td")
     td.textContent = arg  
     return td
 }
+
+
 
 async function getRaceResults() {
     const data = await rawData;
@@ -127,6 +129,11 @@ async function getDriverStandings() {
             const driverNationality = result.Driver.nationality;
             const driverFlag = await getFlag(driverNationality);
             tr.appendChild(printTd(driverFlag))
+
+            // Print driver team
+            const driverTeam = result.Constructors[0].name;
+            tr.appendChild(printTd(driverTeam))
+            console.log(result)
 
             // Print standing driver points
             const driverPoints = result.points;
