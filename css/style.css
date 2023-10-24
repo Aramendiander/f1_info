@@ -48,7 +48,7 @@ td {
     flex-direction: column;
 }
 
-article.season {
+article.season,article.decade {
     display:inline;
     width: 100px;
     padding: 10px;

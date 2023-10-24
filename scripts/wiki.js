@@ -40,7 +40,6 @@ async function getFlag(country){
     const data = await flagData;
     let flag = undefined;
     data.forEach(name => {
-        console.log( )
         if ((name.demonyms && name.demonyms.eng && name.independent)){
             if (name.demonyms.eng.m.toLowerCase() === country.toLowerCase()){
                 flag = name.flag;
@@ -58,21 +57,51 @@ function printTd(arg){
     return td
 }
 
-function backButton() {
-    const back = document.createElement("div")
-    back.id = "back"
-    back.textContent = "Back"
-    const body = document.querySelector("body")
-    body.appendChild(back)
-    body.insertBefore(back,body.childNodes[2])
-    back.addEventListener("click", () => {
-        back.remove()
-        const article = document.querySelectorAll(".season")
-        for(let element of article) {
-            element.remove()
+async function backButton(decade) {
+    const singleSeason = document.getElementById("seasontitle")
+    if(!singleSeason){
+        const back2 = document.getElementById("back2")
+        if(back2){
+            back2.remove()
         }
-        printDecades();
-    })
+        console.log('not single season' + decade)
+        
+        const back = document.createElement("div")
+        back.id = "back"
+        back.textContent = "Back"
+        const body = document.querySelector("body")
+        
+        if(!document.getElementById("back")){ body.insertBefore(back,body.childNodes[2])}
+        back.addEventListener("click", () => {
+            back.remove()
+            const article = document.querySelectorAll(".season")
+            for(let element of article) {
+                element.remove()
+            }
+            printDecades();
+    })} else {
+        console.log('single season' + decade)
+            const back = document.createElement("div")
+            back.id = "back2"
+            back.textContent = "Back"
+            const body = document.querySelector("body")
+            body.appendChild(back)
+            body.insertBefore(back,body.childNodes[2])
+            back.addEventListener("click", () => {
+                console.log(decade)
+                const h1 = document.getElementById("seasontitle")
+                const winner = document.getElementById("winner")
+                const buttons = document.getElementById("buttons")
+                const table = document.getElementById("seasontable")
+                const tbody = document.getElementById("seasoninfo")
+                if(h1){h1.remove()}
+                if(winner) {winner.remove()}
+                buttons.style.display="none"
+                tbody.innerHTML=''
+                table.style.display="none"
+                chooseSeason(decade)
+                })
+        }
 }
 
 // Prints decades
@@ -85,7 +114,7 @@ function printDecades(){
         if (i < 2000) {
             const printDecade = document.createElement("article");
             printDecade.setAttribute("year",i)
-            printDecade.classList.add("season")
+            printDecade.classList.add("decade")
             printDecade.textContent = `${i%100}'s`
             seasons.appendChild(printDecade)
             printDecade.addEventListener("click", () => {
@@ -94,7 +123,7 @@ function printDecades(){
         } else {
             const printDecade = document.createElement("article");
             printDecade.setAttribute("year",i)
-            printDecade.classList.add("season")
+            printDecade.classList.add("decade")
             printDecade.textContent = `${i}'s`
             seasons.appendChild(printDecade)
             printDecade.addEventListener("click", () => {
@@ -107,21 +136,21 @@ function printDecades(){
 // The HTML has a block for each decade, so when the user clicks on the decade, automatically prints the 10 years in the decae
 function chooseSeason(year){
     const seasons = document.getElementById("seasons");
-    const article = document.querySelectorAll(".season")
+    const article = document.querySelectorAll(".decade")
         for(let element of article) {
             element.remove()
         }
-    backButton()
+    backButton(year)
     for(let i = year ; i < year+10; i++){
-        const year = i
+        const years = i
         const season = document.createElement("article")
         season.textContent = i
         season.classList.add("season")
         seasons.appendChild(season)
         season.addEventListener("click", async () => {
-            const seasonData = await getSeason(year)
-            printSeason(seasonData)
-            printWinners(year)
+            const seasonData = await getSeason(years)
+            printSeason(seasonData,year)
+            printWinners(years)
             const buttons = document.getElementById("buttons")
             buttons.style.display="inline-block"
             buttonListeners();
@@ -159,14 +188,21 @@ async function printWinners(year){
     const winningDriverFlag = await getFlag(seasonStandings.MRData.StandingsTable.StandingsLists[0].DriverStandings[0].Driver.nationality)
     winners.id="winner"
     winners.textContent=`The winner of the ${year} season is ${winningDriverName} ${winningDriverFamilyName} ${winningDriverFlag} driving for ${winningDriverConstructor}`
-    sectionSeasons.prepend(winners)
+    sectionSeasons.insertBefore(winners, sectionSeasons.childNodes[2])
 }
 
 
-function printSeason(seasonData){
+function printSeason(seasonData,decade){
+    const back = document.getElementById("back")
+    back.remove()
+    const seasonSection = document.getElementById("seasons")
     const seasonArticles = document.querySelectorAll("article")
-    const table = document.getElementById("seasontable");
-    /* table.style.display = 'inline-block' */
+    const h1 = document.createElement("h1")
+    h1.id = "seasontitle"
+    h1.textContent=`F1 ${seasonData[0].season} Season`;
+    seasonSection.prepend(h1)
+    backButton(decade)
+        const table = document.getElementById("seasontable");
         for (let article of seasonArticles){
             article.remove()
         }
@@ -191,7 +227,6 @@ function printSeason(seasonData){
             const tdRaceName = document.createElement("td");
             tdRaceName.appendChild(raceLink)
             tr.appendChild(tdRaceName)
-            console.log(seasonData[i])
             
             // Print GP Circuit Name
             tr.appendChild(printTd(seasonData[i].Circuit.circuitName))
