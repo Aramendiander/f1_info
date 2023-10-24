@@ -45,6 +45,7 @@ td {
 #seasons {
     display:flex;
     justify-content: space-around;
+    flex-direction: column;
 }
 
 article.season {
@@ -56,7 +57,11 @@ article.season {
     cursor:pointer;
 }
 
-#seasontable,#driverstandingstable,#constructorstandingstable {
+#winner{
+    width:100%;
+}
+
+#seasontable,#driverstandingstable,#constructorstandingstable,#buttons {
     display:none;
 }
 
@@ -74,9 +79,13 @@ article.season {
 
 
 
-@media (max-width: 1500px) {
+@media (max-width: 1600px) {
     div#container {
         padding: 0 100px;
+    }
+
+    td, th{
+        font-size: 15px;
     }
   }
 
