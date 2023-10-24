@@ -148,6 +148,10 @@ function chooseSeason(year){
         season.classList.add("season")
         seasons.appendChild(season)
         season.addEventListener("click", async () => {
+            const main = document.querySelector("main")
+            const body = document.querySelector("body")
+            main.style.display="none"
+            body.appendChild(loading())
             const seasonData = await getSeason(years)
             printSeason(seasonData,year)
             printWinners(years)
@@ -167,7 +171,7 @@ function buttonListeners(){
     const driverStandingsTable = document.getElementById("driverstandings")
     for(let button of buttons){
         button.addEventListener("click",()=> {
-            if(button.innerHTML = "Race table"){
+            if(button.innerHTML === "Race table"){
                 raceTable.style.display="none"
                 const table = document.getElementById("seasontable");
                 table.style.display = 'inline-block'
@@ -178,6 +182,10 @@ function buttonListeners(){
 
 async function printWinners(year){
     const seasonStandings = await getSeasonWinner(year)
+    const main = document.querySelector("main")
+    const loadingImg = document.getElementById("loadingimg")
+    main.style.display="block";
+    loadingImg.remove()
     const sectionSeasons = document.getElementById("seasons")
     const winners = document.createElement("article")
 
@@ -249,7 +257,12 @@ function printSeason(seasonData,decade){
 
 
 
-
+function loading(){
+    const loadingImg = document.createElement("img")
+    loadingImg.id ="loadingimg"
+    loadingImg.src = "../assets/moderncar.png"
+    return loadingImg
+}
 
 
 
