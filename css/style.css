@@ -45,29 +45,43 @@ td {
 #seasons {
     display:flex;
     justify-content: space-around;
-    flex-direction: column;
+    flex-wrap:wrap;
 }
 
-article.season,article.decade {
-    display:inline;
-    width: 100px;
-    padding: 10px;
+.decade,.season {
     border: 1px solid;
-    text-align: center;
+    width: 40px;
+    font-size: 14px;
+    padding:7px;
     cursor:pointer;
+    text-align:center;
 }
 
 #winner{
     width:100%;
 }
 
-#seasontable,#driverstandingstable,#constructorstandingstable,#buttons {
+#seasontable,#driverstandingstable,#constructorstandingstable {
     display:none;
+}
+
+main{
+    flex-wrap:wrap;
 }
 
 
 
+#loading{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
+#loading p{
+    text-align:center;
+    font-size:50px;
+  }
 
 
 

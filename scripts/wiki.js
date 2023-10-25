@@ -64,7 +64,7 @@ async function backButton(decade) {
         if(back2){
             back2.remove()
         }
-        console.log('not single season' + decade)
+
         
         const back = document.createElement("div")
         back.id = "back"
@@ -80,7 +80,6 @@ async function backButton(decade) {
             }
             printDecades();
     })} else {
-        console.log('single season' + decade)
             const back = document.createElement("div")
             back.id = "back2"
             back.textContent = "Back"
@@ -88,17 +87,22 @@ async function backButton(decade) {
             body.appendChild(back)
             body.insertBefore(back,body.childNodes[2])
             back.addEventListener("click", () => {
-                console.log(decade)
                 const h1 = document.getElementById("seasontitle")
                 const winner = document.getElementById("winner")
-                const buttons = document.getElementById("buttons")
                 const table = document.getElementById("seasontable")
                 const tbody = document.getElementById("seasoninfo")
+                const driverStandings = document.getElementById("driverstandingstable")
+                const constructorStandings = document.getElementById("constructorstandingstable")
+                const driverStandingsTbody = document.getElementById("driverstandingsinfo")
+                const constructorStandingsTbody = document.getElementById("constructorstandingsinfo")
                 if(h1){h1.remove()}
                 if(winner) {winner.remove()}
-                buttons.style.display="none"
                 tbody.innerHTML=''
+                driverStandingsTbody.innerHTML=""
+                constructorStandingsTbody.innerHTML=""
                 table.style.display="none"
+                driverStandings.style.display="none"
+                constructorstandingstable.style.display="none"
                 chooseSeason(decade)
                 })
         }
@@ -153,11 +157,13 @@ function chooseSeason(year){
             main.style.display="none"
             body.appendChild(loading())
             const seasonData = await getSeason(years)
-            printSeason(seasonData,year)
             printWinners(years)
-            const buttons = document.getElementById("buttons")
+            printSeason(seasonData,year)
+            printDriverStandings(year)
+            printConstructorStandings(year)
+            /* const buttons = document.getElementById("buttons")
             buttons.style.display="inline-block"
-            buttonListeners();
+            buttonListeners(); */
             
         })
     }
@@ -165,7 +171,7 @@ function chooseSeason(year){
 
 // Code for each individual season
 
-function buttonListeners(){
+/* function buttonListeners(){
     const buttons = document.querySelectorAll("#buttons span")
     const raceTable = document.getElementById("seasontable");
     const driverStandingsTable = document.getElementById("driverstandings")
@@ -178,16 +184,18 @@ function buttonListeners(){
             }
         })
     }
-}
+} */
 
 async function printWinners(year){
     const seasonStandings = await getSeasonWinner(year)
     const main = document.querySelector("main")
     const loadingImg = document.getElementById("loadingimg")
-    main.style.display="block";
+    const loadingText = document.getElementById("loadingtext")
+    main.style.display="flex";
     loadingImg.remove()
+    loadingText.remove()
     const sectionSeasons = document.getElementById("seasons")
-    const winners = document.createElement("article")
+    const winners = document.createElement("h2")
 
 
     const winningDriverName = seasonStandings.MRData.StandingsTable.StandingsLists[0].DriverStandings[0].Driver.givenName
@@ -211,6 +219,7 @@ function printSeason(seasonData,decade){
     seasonSection.prepend(h1)
     backButton(decade)
         const table = document.getElementById("seasontable");
+        table.style.display="block"
         for (let article of seasonArticles){
             article.remove()
         }
@@ -226,6 +235,7 @@ function printSeason(seasonData,decade){
             tbody.appendChild(tr)
 
             // Print GP Name
+            
             const raceID = seasonData[i].round
             const raceSeason = seasonData[i].season
             const raceLink = document.createElement("a")
@@ -255,24 +265,83 @@ function printSeason(seasonData,decade){
         }
 }
 
+async function printDriverStandings(year) {
+    try {
+        const response = await fetch(`https://ergast.com/api/f1/${year}/driverStandings.json`);
+        const data = await response.json();
+        const results = data.MRData.StandingsTable.StandingsLists[0].DriverStandings
+        const table = document.getElementById("driverstandingstable")
+        table.style.display="block"
+        for (let i = 0; i < results.length; i++) {
+            const result = results[i];
+            // Print rows
+            const container = document.getElementById("driverstandingsinfo");
+            const tr = document.createElement("tr");
+            container.appendChild(tr);
 
+            // Print standing position
+            const standingPosition = result.position;
+            tr.appendChild(printTd(standingPosition))
 
-function loading(){
-    const loadingImg = document.createElement("img")
-    loadingImg.id ="loadingimg"
-    loadingImg.src = "../assets/moderncar.png"
-    return loadingImg
+            // Print standing driver
+            const standingDriver = `${result.Driver.givenName} ${result.Driver.familyName}`;
+            tr.appendChild(printTd(standingDriver))
+
+            // Print standing driver nationality
+            const driverNationality = result.Driver.nationality;
+            const driverFlag = await getFlag(driverNationality);
+            tr.appendChild(printTd(driverFlag))
+
+            // Print driver team
+            const driverTeam = result.Constructors[0].name;
+            tr.appendChild(printTd(driverTeam))
+
+            // Print standing driver points
+            const driverPoints = result.points;
+            tr.appendChild(printTd(driverPoints))
+        }
+    } catch(error){
+        console.log(error);
+    }
 }
 
 
-
-
-
-async function getRaceResults(season, race) {
+async function printConstructorStandings(year) {
     try {
-        const response = await fetch("https://ergast.com/api/f1/"+season+"/"+race+"/results.json");
-        const lastRace = await response.json();
-        return lastRace;
+        const response = await fetch(`https://ergast.com/api/f1/${year}/constructorStandings.json`);
+        const data = await response.json();
+        console.log(data)
+        const results = data.MRData.StandingsTable.StandingsLists[0].ConstructorStandings
+        const table = document.getElementById("constructorstandingstable")
+        table.style.display="block"
+        if(results) {
+            for (let i = 0; i < results.length; i++) {
+                const result = results[i];
+                // Print rows
+                const container = document.getElementById("constructorstandingsinfo");
+                const tr = document.createElement("tr");
+                container.appendChild(tr);
+
+                // Print standing position
+                const standingPosition = result.position;
+                tr.appendChild(printTd(standingPosition))
+
+                // Print standing constructor
+                const standingConstructor = result.Constructor.name ;
+                tr.appendChild(printTd(standingConstructor))
+
+                // Print standing driver nationality
+                const constructorCounty = result.Constructor.nationality;
+                const constructorFlag = await getFlag(constructorCounty);
+                tr.appendChild(printTd(constructorFlag))
+
+                // Print standing driver points
+                const constructorPoints = result.points;
+                tr.appendChild(printTd(constructorPoints)) 
+            }
+        } else {
+            console.log("there is not constructor standings")
+        }
     } catch(error){
         console.log(error);
     }
@@ -280,6 +349,19 @@ async function getRaceResults(season, race) {
 
 
 
+function loading(){
+    const loadingDiv = document.createElement("div")
+    loadingDiv.id = "loading"
+    const loadingImg = document.createElement("img")
+    loadingImg.id ="loadingimg"
+    loadingImg.src = "../assets/moderncar.gif"
+    const loadingText = document.createElement("p")
+    loadingText.id ="loadingtext"
+    loadingText.textContent="Loading..."
+    loadingDiv.appendChild(loadingImg)
+    loadingDiv.appendChild(loadingText)
+    return loadingDiv
+}
 
 
 
@@ -289,5 +371,12 @@ async function getRaceResults(season, race) {
 
 
 
+
+
+/* 
+Comprobar que están cubiertas cosas como: 
+El ganador del año de una temporada no ha acabado
+No imprimir hasta 2029 cuando no existe la temporada
+ */
 
 printDecades()
