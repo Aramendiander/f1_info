@@ -99,10 +99,10 @@ async function backButton(decade) {
                 if(winner) {winner.remove()}
                 tbody.innerHTML=''
                 driverStandingsTbody.innerHTML=""
-                constructorStandingsTbody.innerHTML=""
+                if(constructorStandingsTbody){constructorStandingsTbody.innerHTML=""}
                 table.style.display="none"
                 driverStandings.style.display="none"
-                constructorstandingstable.style.display="none"
+                if(constructorStandings){constructorStandings.style.display="none"}
                 chooseSeason(decade)
                 })
         }
@@ -146,7 +146,7 @@ function chooseSeason(year){
         }
     backButton(year)
     for(let i = year ; i < year+10; i++){
-        const years = i
+        const currentyear = i
         const season = document.createElement("article")
         season.textContent = i
         season.classList.add("season")
@@ -155,15 +155,12 @@ function chooseSeason(year){
             const main = document.querySelector("main")
             const body = document.querySelector("body")
             main.style.display="none"
-            body.appendChild(loading())
-            const seasonData = await getSeason(years)
-            printWinners(years)
+            body.appendChild(loading(year))
+            const seasonData = await getSeason(currentyear)
+            printWinners(currentyear)
             printSeason(seasonData,year)
-            printDriverStandings(year)
-            printConstructorStandings(year)
-            /* const buttons = document.getElementById("buttons")
-            buttons.style.display="inline-block"
-            buttonListeners(); */
+            printDriverStandings(currentyear)
+            printConstructorStandings(currentyear)
             
         })
     }
@@ -308,6 +305,7 @@ async function printDriverStandings(year) {
 
 async function printConstructorStandings(year) {
     try {
+        if(year >= 1958) {
         const response = await fetch(`https://ergast.com/api/f1/${year}/constructorStandings.json`);
         const data = await response.json();
         console.log(data)
@@ -339,6 +337,7 @@ async function printConstructorStandings(year) {
                 const constructorPoints = result.points;
                 tr.appendChild(printTd(constructorPoints)) 
             }
+        }
         } else {
             console.log("there is not constructor standings")
         }
@@ -349,7 +348,7 @@ async function printConstructorStandings(year) {
 
 
 
-function loading(){
+function loading(year){
     const loadingDiv = document.createElement("div")
     loadingDiv.id = "loading"
     const loadingImg = document.createElement("img")
