@@ -1,9 +1,37 @@
-div#container {
-    padding: 0 350px;
+body {
+ background-image:url(../assets/background.jpg)   
 }
+
+table {
+    background-color: #ff2800;
+    -webkit-box-shadow: 0px 0px 11px -2px #FFFFFF; 
+    box-shadow: 0px 0px 11px -2px #FFFFFF;
+    border-collapse: collapse;
+}
+
 
 h1, h2 {
     text-align: center;
+    color: white;
+}
+
+h1, #winner {
+    font-size: 50px;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+nav {
+    background-color: red;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+#back, #back2 {
+    display:inline;
 }
 
 
@@ -21,15 +49,19 @@ section#standings {
 }
 
 table {
-    border: 1px solid;
+    border: 1px solid white;
 }
 
 td, th{
     font-size: 26px;
+    color: white;
+    text-align: center;
+    padding: 10px 10px;
 }
 
 td {
-    padding: 5px 10px;
+
+    border-top: 1px solid white;
 }
 
 #fastestlap {
@@ -49,13 +81,20 @@ td {
     width: 100%;
 }
 
+table a {
+    color: cyan;
+}
+
 .decade,.season {
     border: 1px solid;
-    width: 40px;
-    font-size: 14px;
+    width: 60px;
+    font-size: 20px;
     padding:7px;
     cursor:pointer;
     text-align:center;
+    background-color: #ff2800;
+    color: white;
+    border-radius: 5px;
 }
 
 #winner{
@@ -79,6 +118,7 @@ main{
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  color:white;
 }
 
 #loading p{

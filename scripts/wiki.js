@@ -67,11 +67,12 @@ async function backButton(decade) {
 
         
         const back = document.createElement("div")
+        const nav = document.querySelector("nav")
         back.id = "back"
         back.textContent = "Back"
         const body = document.querySelector("body")
         
-        if(!document.getElementById("back")){ body.insertBefore(back,body.childNodes[2])}
+        if(!document.getElementById("back")){ nav.prepend(back)}
         back.addEventListener("click", () => {
             back.remove()
             const article = document.querySelectorAll(".season")
@@ -83,9 +84,9 @@ async function backButton(decade) {
             const back = document.createElement("div")
             back.id = "back2"
             back.textContent = "Back"
-            const body = document.querySelector("body")
-            body.appendChild(back)
-            body.insertBefore(back,body.childNodes[2])
+            const body = document.querySelector("nav")
+            body.prepend(back)
+/*             body.insertBefore(back,body.childNodes[2]) */
             back.addEventListener("click", () => {
                 const h1 = document.getElementById("seasontitle")
                 const winner = document.getElementById("winner")
@@ -95,6 +96,8 @@ async function backButton(decade) {
                 const constructorStandings = document.getElementById("constructorstandingstable")
                 const driverStandingsTbody = document.getElementById("driverstandingsinfo")
                 const constructorStandingsTbody = document.getElementById("constructorstandingsinfo")
+                const driverStandingsTitle = document.querySelector("#driverstandings > h2")
+                const constructorStandingsTitle = document.querySelector("#constructorstandings > h2")
                 if(h1){h1.remove()}
                 if(winner) {winner.remove()}
                 tbody.innerHTML=''
@@ -103,6 +106,8 @@ async function backButton(decade) {
                 table.style.display="none"
                 driverStandings.style.display="none"
                 if(constructorStandings){constructorStandings.style.display="none"}
+                driverStandingsTitle.remove()
+                constructorStandingsTitle.remove()
                 chooseSeason(decade)
                 })
         }
@@ -267,6 +272,13 @@ async function printDriverStandings(year) {
         const response = await fetch(`https://ergast.com/api/f1/${year}/driverStandings.json`);
         const data = await response.json();
         const results = data.MRData.StandingsTable.StandingsLists[0].DriverStandings
+
+        const driverStandingsSection = document.getElementById("driverstandings")
+        const driverStandingsTitle = document.createElement("h2")
+        driverStandingsTitle.textContent=`Driver standings of ${year}` 
+        driverStandingsSection.prepend(driverStandingsTitle)
+
+
         const table = document.getElementById("driverstandingstable")
         table.style.display="block"
         for (let i = 0; i < results.length; i++) {
@@ -308,7 +320,13 @@ async function printConstructorStandings(year) {
         if(year >= 1958) {
         const response = await fetch(`https://ergast.com/api/f1/${year}/constructorStandings.json`);
         const data = await response.json();
-        console.log(data)
+        
+        const constructorStandingsSection = document.getElementById("constructorstandings")
+        const constructorStandingsTitle = document.createElement("h2")
+        constructorStandingsTitle.textContent=`Constructor standings of ${year}` 
+        constructorStandingsSection.prepend(constructorStandingsTitle)
+
+
         const results = data.MRData.StandingsTable.StandingsLists[0].ConstructorStandings
         const table = document.getElementById("constructorstandingstable")
         table.style.display="block"
