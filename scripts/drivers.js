@@ -123,6 +123,7 @@ function heart() {
         // Agregar un evento click a cada corazón para almacenar o eliminar datos en el almacenamiento local
         heart.addEventListener('click', function() {
             activeHeart(i)
+            checkActiveHeart()
             const driverData = driver[i].innerHTML;
             // Llamar a toggleLocalStorage para agregar o eliminar datos específicos
             toggleLocalStorage('driver_' + i, driverData);
@@ -152,7 +153,7 @@ async function alonsify () {
         for(let i = 0 ; i < drivers.length ; i++){
             // Change photo
             const photo = document.getElementsByClassName("photo")[i]
-            const random = Math.floor(Math.random() * 31) + 1;
+            const random = Math.floor(Math.random() * 30) + 1;
             photo.classList.add("alonsified")
             photo.src = `../assets/drivers/alonso/alonso${random}.jpg`
             
@@ -182,5 +183,21 @@ async function alonsify () {
     
 }
 
-
+function nano() {
+    // Obtain a reference to the button and the audio element
+    const alonsify = document.getElementById("alonsify");
+    const miAudio = document.getElementById("nano");
+  
+    // Check if the audio element exists
+    if (miAudio) {
+      // Add an event listener to the button
+      alonsify.addEventListener("click", function() {
+        miAudio.play();
+      });
+    } else {
+      console.error("The audio element with id 'miAudio' was not found.");
+    }
+  }
+  
+nano();
 alonsify ()
