@@ -92,22 +92,22 @@ function toggleLocalStorage(key, value) {
     }
 }
 
-function activeHeart(pos){
-    const heart = document.getElementsByClassName("heart")
-    heart[pos].innerHTML = "❤️"
+function activeHeart(pos, isActive) {
+    const heart = document.getElementsByClassName("heart");
+    heart[pos].innerHTML = isActive ? "❤️" : "🖤";
 }
 
-function checkActiveHeart(){
-    for (let i = 0; i< 22 ; i++) {
+function checkActiveHeart() {
+    for (let i = 0; i < 22; i++) {
         const key = `driver_${i}`;
         const piloto = localStorage.getItem(key);
 
         if (piloto != null) {
-            const heart = document.getElementsByClassName("heart")
-            heart[i].innerHTML="❤️"
-
+            activeHeart(i, true);
+        } else {
+            activeHeart(i, false);
         }
-      }
+    }
 }
 
 function heart() {
@@ -127,6 +127,7 @@ function heart() {
             const driverData = driver[i].innerHTML;
             // Llamar a toggleLocalStorage para agregar o eliminar datos específicos
             toggleLocalStorage('driver_' + i, driverData);
+            checkActiveHeart()
         });
 
         dataContainer[i].appendChild(heart);
