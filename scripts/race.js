@@ -52,6 +52,12 @@ function printTd(arg){
 async function printRaceTable(){
     const raceData = await getRaceData()
     const race = raceData.MRData.RaceTable.Races[0]
+    const container = document.querySelector("section")
+    const h1 = document.createElement("h1")
+    h1.textContent=`Results for the ${race.season} ${race.raceName} `
+    console.log(race)
+    container.prepend(h1)
+
     
     for(let i = 0 ; i < race.Results.length ; i++){
         const table = document.querySelector("table")
